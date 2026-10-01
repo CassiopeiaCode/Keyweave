@@ -1,0 +1,18 @@
+{
+  "description": "Before downstream bytes are emitted, retry another credential on template 429 policy.",
+  "attempt1": {
+    "instanceId": "a",
+    "status": 429,
+    "downstreamStarted": false
+  },
+  "templateAction": {
+    "action": "retry",
+    "target": "another"
+  },
+  "expected": {
+    "exclude": [
+      "a"
+    ],
+    "attempt": 2
+  }
+}

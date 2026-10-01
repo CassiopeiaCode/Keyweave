@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/ptpg/errors.schema.json",
+  "title": "Gateway Error",
+  "type": "object",
+  "required": ["code", "message", "category", "retryable"],
+  "properties": {
+    "code": {"type": "string", "minLength": 1},
+    "message": {"type": "string", "minLength": 1},
+    "category": {
+      "enum": [
+        "auth", "routing", "scheduler", "template", "transport",
+        "proxy", "upstream", "storage", "validation", "internal"
+      ]
+    },
+    "retryable": {"type": "boolean"},
+    "httpStatus": {"type": "integer", "minimum": 400, "maximum": 599},
+    "requestId": {"type": "string"},
+    "attempt": {"type": "integer", "minimum": 0},
+    "details": {"type": "object", "additionalProperties": true}
+  },
+  "additionalProperties": false
+}

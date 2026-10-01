@@ -1,0 +1,26 @@
+{
+  "description": "Credential a at hard max must be filtered even if its availability is higher.",
+  "request": {
+    "groupId": "g1",
+    "protocol": "openai.responses",
+    "model": "x"
+  },
+  "candidates": [
+    {
+      "instanceId": "a",
+      "availability": 1000,
+      "decrease": 0,
+      "activeRequests": 1,
+      "hardMaxConcurrency": 1
+    },
+    {
+      "instanceId": "b",
+      "availability": 100,
+      "decrease": 1,
+      "activeRequests": 0
+    }
+  ],
+  "expected": {
+    "selectedInstanceId": "b"
+  }
+}

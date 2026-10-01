@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/ptpg/template-manifest.schema.json",
+  "title": "PTPG Template Manifest",
+  "type": "object",
+  "required": [
+    "id",
+    "apiVersion",
+    "protocols"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "apiVersion": {
+      "const": "ptpg.template/v1"
+    },
+    "protocols": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "defaultDecrease": {
+      "type": "number"
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "credentialBoundNetwork": {
+          "type": "boolean"
+        },
+        "directNetwork": {
+          "type": "boolean"
+        },
+        "mutateInstance": {
+          "type": "boolean"
+        },
+        "mutateTemplate": {
+          "type": "boolean"
+        },
+        "setSecrets": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

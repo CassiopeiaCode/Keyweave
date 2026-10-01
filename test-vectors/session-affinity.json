@@ -1,0 +1,25 @@
+{
+  "description": "Existing valid binding wins even if another credential currently has higher score.",
+  "session": {
+    "id": "s1"
+  },
+  "binding": {
+    "instanceId": "a",
+    "expiresAt": 9999999999999
+  },
+  "candidates": [
+    {
+      "instanceId": "a",
+      "effectiveAvailability": 50,
+      "activeRequests": 0
+    },
+    {
+      "instanceId": "b",
+      "effectiveAvailability": 100,
+      "activeRequests": 0
+    }
+  ],
+  "expected": {
+    "selectedInstanceId": "a"
+  }
+}

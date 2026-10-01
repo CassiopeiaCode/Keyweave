@@ -1,0 +1,53 @@
+{
+  "templates": [
+    {
+      "id": "openrouter",
+      "protocols": [
+        "openai.chat",
+        "openai.responses"
+      ],
+      "officialDefaults": {
+        "baseUrl": "https://openrouter.ai/api/v1",
+        "availability": 100
+      },
+      "customFields": {
+        "decrease": 1
+      }
+    }
+  ],
+  "credentials": [
+    {
+      "id": "or-1",
+      "templateId": "openrouter",
+      "availability": 100,
+      "models": [
+        {
+          "id": "fast",
+          "upstream": "openai/gpt-example"
+        }
+      ],
+      "proxy": "http://user:pass@127.0.0.1:8080"
+    },
+    {
+      "id": "or-2",
+      "templateId": "openrouter",
+      "availability": 100,
+      "models": [
+        {
+          "id": "fast",
+          "upstream": "openai/gpt-example"
+        }
+      ],
+      "proxy": "direct"
+    }
+  ],
+  "groups": [
+    {
+      "id": "personal",
+      "templateIds": [
+        "openrouter"
+      ],
+      "schedulerType": "availability-round-robin"
+    }
+  ]
+}

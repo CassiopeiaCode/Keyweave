@@ -1,0 +1,25 @@
+{
+  "description": "Same availability; active decrease should steer to idle credential.",
+  "request": {
+    "groupId": "g1",
+    "protocol": "openai.chat",
+    "model": "fast"
+  },
+  "candidates": [
+    {
+      "instanceId": "a",
+      "availability": 100,
+      "decrease": 10,
+      "activeRequests": 1
+    },
+    {
+      "instanceId": "b",
+      "availability": 100,
+      "decrease": 10,
+      "activeRequests": 0
+    }
+  ],
+  "expected": {
+    "selectedInstanceId": "b"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/ptpg/config.schema.json",
+  "title": "Programmable Token Pool Process Configuration",
+  "type": "object",
+  "required": ["server", "database", "runtime", "routing", "transport", "secrets"],
+  "properties": {
+    "server": {
+      "type": "object",
+      "required": ["listen"],
+      "properties": {
+        "listen": {"type": "string"},
+        "publicBaseUrl": {"type": "string"},
+        "shutdownGrace": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "database": {
+      "type": "object",
+      "required": ["path"],
+      "properties": {
+        "path": {"type": "string"},
+        "wal": {"type": "boolean", "default": true},
+        "busyTimeout": {"type": "string", "default": "5s"}
+      },
+      "additionalProperties": false
+    },
+    "runtime": {
+      "type": "object",
+      "properties": {
+        "templateEngine": {"type": "string", "enum": ["goja", "quickjs"]},
+        "templateWallTimeout": {"type": "string"},
+        "templateCpuBudget": {"type": "string"},
+        "maxTemplateMemoryBytes": {"type": "integer", "minimum": 1048576},
+        "maxLogBytesPerRequest": {"type": "integer", "minimum": 1024}
+      },
+      "additionalProperties": false
+    },
+    "routing": {
+      "type": "object",
+      "properties": {
+        "schedulingShards": {"type": "integer", "minimum": 1, "maximum": 4096},
+        "defaultScheduler": {"type": "string"},
+        "maxAttempts": {"type": "integer", "minimum": 1, "maximum": 20}
+      },
+      "additionalProperties": false
+    },
+    "transport": {
+      "type": "object",
+      "properties": {
+        "dialTimeout": {"type": "string"},
+        "responseHeaderTimeout": {"type": "string"},
+        "idleConnTimeout": {"type": "string"},
+        "maxIdleConns": {"type": "integer", "minimum": 0},
+        "maxIdleConnsPerHost": {"type": "integer", "minimum": 0},
+        "allowDirectNetworkFromTemplates": {"type": "boolean", "default": false}
+      },
+      "additionalProperties": false
+    },
+    "secrets": {
+      "type": "object",
+      "required": ["masterKeyProvider"],
+      "properties": {
+        "masterKeyProvider": {"type": "string"},
+        "masterKeyId": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "admin": {"type": "object", "additionalProperties": true},
+    "observability": {"type": "object", "additionalProperties": true}
+  },
+  "additionalProperties": false
+}

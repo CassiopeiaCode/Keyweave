@@ -1,0 +1,197 @@
+openapi: 3.1.0
+info:
+  title: Programmable Token Pool Gateway API
+  version: 0.1.0
+servers:
+  - url: http://127.0.0.1:8317
+
+paths:
+  /api/admin/v1/templates:
+    get:
+      summary: List credential templates
+      responses:
+        "200": { description: OK }
+    post:
+      summary: Create credential template
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TemplateUpsert"
+      responses:
+        "201": { description: Created }
+
+  /api/admin/v1/templates/{id}:
+    get:
+      summary: Get credential template
+      parameters: [ { $ref: "#/components/parameters/ID" } ]
+      responses:
+        "200": { description: OK }
+    patch:
+      summary: Patch credential template using optimistic version
+      parameters: [ { $ref: "#/components/parameters/ID" } ]
+      responses:
+        "200": { description: OK }
+        "409": { description: Version conflict }
+    delete:
+      summary: Delete credential template
+      parameters: [ { $ref: "#/components/parameters/ID" } ]
+      responses:
+        "204": { description: Deleted }
+        "409": { description: Template still has instances }
+
+  /api/admin/v1/templates/{id}/validate:
+    post:
+      summary: Compile and validate a template without installing a new version
+      parameters: [ { $ref: "#/components/parameters/ID" } ]
+      responses:
+        "200": { description: Validation result }
+
+  /api/admin/v1/templates/{id}/test:
+    post:
+      summary: Run Template Debugger / dry-run
+      parameters: [ { $ref: "#/components/parameters/ID" } ]
+      responses:
+        "200": { description: Debug trace }
+
+  /api/admin/v1/credentials:
+    get:
+      summary: List credentials with secrets masked
+      responses:
+        "200": { description: OK }
+    post:
+      summary: Create credential instance
+      responses:
+        "201": { description: Created }
+
+  /api/admin/v1/credentials/{id}:
+    get:
+      summary: Get credential with secrets masked
+      parameters: [ { $ref: "#/components/parameters/ID" } ]
+      responses:
+        "200": { description: OK }
+    patch:
+      summary: Patch credential
+      parameters: [ { $ref: "#/components/parameters/ID" } ]
+      responses:
+        "200": { description: OK }
+        "409": { description: Version conflict }
+    delete:
+      summary: Delete credential
+      parameters: [ { $ref: "#/components/parameters/ID" } ]
+      responses:
+        "204": { description: Deleted }
+
+  /api/admin/v1/credentials/{id}/rebind-template:
+    post:
+      summary: Dry-run or execute template rebinding
+      parameters: [ { $ref: "#/components/parameters/ID" } ]
+      responses:
+        "200": { description: Rebind result }
+
+  /api/admin/v1/groups:
+    get:
+      summary: List credential groups
+      responses:
+        "200": { description: OK }
+    post:
+      summary: Create credential group
+      responses:
+        "201": { description: Created }
+
+  /api/admin/v1/groups/{id}:
+    get:
+      summary: Get credential group
+      parameters: [ { $ref: "#/components/parameters/ID" } ]
+      responses:
+        "200": { description: OK }
+    patch:
+      summary: Patch credential group
+      parameters: [ { $ref: "#/components/parameters/ID" } ]
+      responses:
+        "200": { description: OK }
+        "409": { description: Version conflict }
+
+  /api/admin/v1/groups/{id}/simulate-route:
+    post:
+      summary: Simulate filtering and scheduling without upstream call
+      parameters: [ { $ref: "#/components/parameters/ID" } ]
+      responses:
+        "200": { description: Routing simulation }
+
+  /api/admin/v1/access-keys:
+    get:
+      summary: List access keys without full secret
+      responses:
+        "200": { description: OK }
+    post:
+      summary: Create access key; full secret returned once
+      responses:
+        "201": { description: Created }
+
+  /api/admin/v1/access-keys/{id}/rotate:
+    post:
+      summary: Rotate access key; full secret returned once
+      parameters: [ { $ref: "#/components/parameters/ID" } ]
+      responses:
+        "200": { description: Rotated }
+
+  /v1/models:
+    get:
+      summary: Client-key-scoped OpenAI-style model catalog
+      responses:
+        "200": { description: OK }
+
+  /v1/chat/completions:
+    post:
+      summary: OpenAI Chat Completions gateway
+      responses:
+        "200": { description: Upstream response }
+
+  /v1/responses:
+    post:
+      summary: OpenAI Responses gateway
+      responses:
+        "200": { description: Upstream response }
+
+  /v1/messages:
+    post:
+      summary: Anthropic Messages gateway
+      responses:
+        "200": { description: Upstream response }
+
+components:
+  parameters:
+    ID:
+      name: id
+      in: path
+      required: true
+      schema: { type: string }
+
+  schemas:
+    TemplateUpsert:
+      type: object
+      required: [id, name, protocols, jsSource]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        description: { type: string }
+        protocols:
+          type: array
+          items: { type: string }
+        officialDefaults: { type: object }
+        customFields: { type: object }
+        state: { type: object }
+        jsSource: { type: string }
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string }
+            message: { type: string }
+            details: { type: object }

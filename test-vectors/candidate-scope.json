@@ -1,0 +1,13 @@
+{
+  "description": "Custom scheduler may never select instance outside the supplied candidate set.",
+  "candidateIds": [
+    "a",
+    "b"
+  ],
+  "schedulerResult": {
+    "selectedInstanceId": "secret-c"
+  },
+  "expected": {
+    "errorCode": "scheduler_invalid_selection"
+  }
+}

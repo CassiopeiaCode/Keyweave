@@ -1,0 +1,15 @@
+{
+  "description": "After downstream starts, do not transparently switch credential.",
+  "attempt1": {
+    "instanceId": "a",
+    "error": "upstream reset",
+    "downstreamStarted": true
+  },
+  "templateAction": {
+    "action": "retry",
+    "target": "another"
+  },
+  "expected": {
+    "retry": false
+  }
+}
