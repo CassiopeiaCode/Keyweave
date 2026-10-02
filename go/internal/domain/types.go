@@ -99,3 +99,28 @@ type SecretItem struct {
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 }
+
+type CandidateSnapshot struct {
+	InstanceID          string
+	TemplateID          string
+	Availability        float64
+	Decrease            float64
+	CanSchedule         bool
+	ClientModel         string
+	UpstreamModel       string
+	HardMaxConcurrency  *int
+	Attributes          map[string]interface{}
+}
+
+type CandidateRuntime struct {
+	CandidateSnapshot
+	ActiveRequests        int
+	EffectiveAvailability float64
+}
+
+type RoutingRequest struct {
+	RequestID      string
+	GroupID        string
+	Protocol       ProtocolID
+	RequestedModel string
+}
